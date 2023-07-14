@@ -13,23 +13,40 @@ const Producto = styled.li`
     align-items: center;
     border-bottom: 1px solid #e1e1e1;
     border-radius: 1rem;
+
+    @media(max-width: 448px) {
+        flex-direction: column;
+    }
 `;
 
 const DescripcionProducto = styled.div`
     flex: 0 1 600px;
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    column-gap: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 5rem;
+
+    @media(max-width: 448px) {
+        flex-direction: column;
+        justify-content: space-evenly;
+        
+    }
 `;
 
 const Titulo = styled.a`
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: bold;
     margin: 0;
     color: black;
+    text-align: center;
 
     :hover{
         cursor: pointer;
+    }
+
+    @media(max-width: 448px) {
+        font-size: 3.5rem;
     }
 `;
 
@@ -88,6 +105,7 @@ const DetallesProducto = ({producto}) => {
             <DescripcionProducto>
                 <div 
                     css={css`
+                        //flex: 1;
                         display: flex;
                         align-items: center;
                     `}
@@ -100,7 +118,19 @@ const DetallesProducto = ({producto}) => {
                     />
                 </div>
 
-                <div>
+                <div
+                    css={css`
+                        //flex: 3;
+                        
+
+                        @media(max-width: 448px) {
+                            display: flex;
+                            align-items: center;
+                            flex-direction: column;
+
+                        }
+                    `}
+                >
                     <Link
                         href={`/productos/${id}`}
                     >

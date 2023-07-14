@@ -14,13 +14,19 @@ const ContenedorHeader = styled.div`
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    align-items: center;
     @media (min-width: 768px) {
         flex-direction: row;
         justify-content: space-between;
     }
+
+    @media(max-width: 448px) {
+        padding: 1rem;
+        gap: 2rem;
+    }
 `;
 
-const Logo = styled.p`
+const Logo = styled.a`
     color: var(--naranja);
     font-size: 3.5rem;
     line-height: 0;
@@ -28,6 +34,10 @@ const Logo = styled.p`
     font-family: 'Roboto Slab', serif;
     margin-right: 2rem;
     cursor: pointer;
+
+    @media(max-width: 448px) {
+        margin: 0;
+    }
 `
 const Header = () => {
 

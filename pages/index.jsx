@@ -1,32 +1,11 @@
 import Layout from "../components/layout/Layout";
-import React, { useEffect, useState, useContext} from 'react';
-import { FirebaseContext } from "../firebase";
-import { collection, getDocs, orderBy } from "firebase/firestore";
+import React from 'react';
 import DetallesProducto from "../components/layout/DetallesProducto";
+import useProductos from "../hooks/useProductos";
 
 const Home = () => {
 
-    const [productos, setProductos] = useState([]);
-    const [cargando, setCargando] = useState(false);
-    const { firebase } = useContext(FirebaseContext);
-
-    useEffect(()=>{
-        const obtenerProductos = async () =>{
-            setCargando(true);
-            const query = await getDocs(collection(firebase.db,"productos"));
-            orderBy('creado','desc');
-            const productos = query.docs.map(doc =>{
-                return {
-                    id: doc.id,
-                    ...doc.data()
-                }
-            });
-            setProductos(productos);
-        }
-        obtenerProductos();
-        setCargando(false);
-    },[]);
-
+    const { productos } = useProductos('creado');
     
     return (
         <Layout

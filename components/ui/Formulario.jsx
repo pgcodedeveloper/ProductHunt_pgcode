@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 export const Formulario = styled.form`
     max-width: 600px;
-    width: 95%;
+    width: 90%;
     margin: 5rem auto 0 auto;
     padding: 1.5rem;
     border-radius: 1rem;
@@ -42,6 +42,11 @@ export const Campo = styled.div`
         @media (min-width: 768px) {
             flex: 0 0 150px;
             font-size: 1.8rem;
+        }
+
+        @media(max-width: 448px) {
+            width: 100%;
+            text-align: left;
         }
         
         font-size: 1.5rem;

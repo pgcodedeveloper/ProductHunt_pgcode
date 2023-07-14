@@ -56,7 +56,8 @@ const NuevoProducto = () => {
             creador: {
                 id: auth.uid,
                 nombre: auth.displayName
-            }
+            },
+            haVotado : []
         };
 
         //Incertar en la BD
@@ -162,6 +163,10 @@ const NuevoProducto = () => {
                         noValidate
                         css={css`
                             margin-bottom: 5rem;
+
+                            @media(max-width: 448px) {
+                                margin-bottom: 10rem;
+                            }
                         `}
                     >
                         <fieldset>
