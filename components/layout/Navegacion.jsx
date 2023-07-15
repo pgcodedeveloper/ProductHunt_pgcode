@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import { FirebaseContext } from '../../firebase';
 const Nav = styled.nav`
+    transition: all .2s linear;
     padding-left: 2rem;
     display: flex;
     align-items: center;
@@ -42,7 +43,10 @@ const Nav = styled.nav`
 const Navegacion = () => {
     const {auth} = useContext(FirebaseContext);
     return (
-        <Nav>
+        <Nav
+            id='menu'
+            className='menuVisible'
+        >
             <Link href={'/'} legacyBehavior>
                 <a>
                     <i className="fa-solid fa-house"></i>

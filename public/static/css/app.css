@@ -10,3 +10,14 @@
 .bg-white {
     background-color: #FFF;
 }
+
+@media(max-width: 448px) {
+    .menuVisible{
+        transform: translateY(0);
+    }
+}
+@media(max-width: 448px) {
+    .menuOculto{
+        transform: translateY(10rem);
+    }
+}

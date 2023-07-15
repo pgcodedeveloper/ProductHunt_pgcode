@@ -11,6 +11,7 @@ import styled from '@emotion/styled';
 import Swal from 'sweetalert2';
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { generarIdRandom } from '../../helpers';
 import Image from 'next/image';
 import {Campo, InputSubmit} from '../../components/ui/Formulario';
 import Boton from '../../components/ui/Boton';
@@ -58,6 +59,7 @@ const Producto = () => {
     const [producto, setProducto] = useState({});
     const [cargando, setCargando] = useState(true);
     const [comentario, setComentario] = useState({});
+    const [coment, setComent] = useState({});
     const [error,setError] = useState(false);
     const [consultarDB,setConsultarDB] = useState(true);
     const { firebase, auth } = useContext(FirebaseContext);
@@ -123,8 +125,7 @@ const Producto = () => {
     }
 
     const comentarioChange = e =>{
-        setComentario({
-            ...comentario,
+        setComent({
             [e.target.name] : e.target.value
         });
     }
@@ -141,10 +142,14 @@ const Producto = () => {
         if(!auth){
             return router.push('/login');
         }
-        comentario.usrId = auth.uid;
-        comentario.usrNombre = auth.displayName;
+        coment.id = generarIdRandom();
+        coment.usrId = auth.uid;
+        coment.usrNombre = auth.displayName;
         
-        const nuevoComentario = [...comentarios, comentario];
+        const nuevoComentario = [...comentarios, coment];
+
+        console.log(nuevoComentario);
+        
         
         const docRef = doc(firebase.db, "productos", `${id}`);
  
@@ -155,7 +160,7 @@ const Producto = () => {
         //Act el State
         setComentario({
             ...comentario,
-            comentarios: nuevoComentario
+            nuevoComentario
         });
 
         
@@ -173,9 +178,65 @@ const Producto = () => {
     const puedeBorrar = ()=>{
         if(!auth) return false;
 
+        
         if(creador.id === auth.uid){
             return true;
         }
+    }
+
+    const puedeBorarComent = (usrId) =>{
+        if(!auth) return false;
+
+        if(usrId === auth.uid){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    const eliminarComentario = (idC) =>{
+        Swal.fire({
+            title: '¿Esta usted seguro de querer eliminar el comentario?',
+            text: ' Esta acción no podra ser recuperada',
+            icon: 'question',
+            showCancelButton: true,
+            showConfirmButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((response) =>{
+            if(response.isConfirmed){
+                eliminarComent(idC);
+            }
+        })
+    }
+
+    const eliminarComent = (idC) =>{
+        
+        if(!auth){
+            return router.push('/login');
+        }
+        
+        const comentUpdate = comentarios.filter(coment => coment.id !== idC);
+        
+        const docRef = doc(firebase.db, "productos", `${id}`);
+ 
+        updateDoc(docRef, {
+            comentarios: comentUpdate
+        });
+
+        //Act el State
+        setComentario({
+            ...comentario,
+            comentarios: comentUpdate
+        });
+
+        Swal.fire({
+            title: 'Exito',
+            text: 'Comentario eliminado correctamente',
+            icon: 'success'  
+        });
+        setConsultarDB(true);
     }
 
     const eliminarProducto =() =>{
@@ -309,6 +370,7 @@ const Producto = () => {
                                                             padding: 2rem;
                                                             border-radius: 2rem;
                                                             margin-bottom: 2.5rem;
+                                                            position: relative;
                                                             
                                                             @media(min-width: 768px){
                                                                 &:last-of-type{
@@ -334,6 +396,23 @@ const Producto = () => {
                                                             </span>
                                                         </p>
                                                         {esCreador(comentario.usrId) && <CreadorProducto>Es Creador</CreadorProducto>}
+
+                                                        {puedeBorarComent(comentario.usrId) && (
+                                                            <Boton
+                                                                css={css`
+                                                                    position: absolute;
+                                                                    top: 1rem;
+                                                                    right: 1rem;
+                                                                    border: none;
+                                                                    padding: .5rem;
+                                                                    font-size: 1.5rem;
+                                                                    color: red;
+                                                                `}
+                                                                onClick={() => eliminarComentario(comentario.id)}
+                                                            >
+                                                                <i className="fa-regular fa-trash-can"></i>
+                                                            </Boton>
+                                                        )}
                                                     </li>
                                                 ))}
                                             </ul>
