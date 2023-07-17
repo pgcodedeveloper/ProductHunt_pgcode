@@ -15,6 +15,7 @@ import { generarIdRandom } from '../../helpers';
 import Image from 'next/image';
 import {Campo, InputSubmit} from '../../components/ui/Formulario';
 import Boton from '../../components/ui/Boton';
+import Loader from '../../components/ui/Loader';
 
 const ContProducto = styled.div`
     @media (min-width: 768px) {
@@ -142,15 +143,24 @@ const Producto = () => {
         if(!auth){
             return router.push('/login');
         }
+        if(coment.mensaje === undefined) {
+            Swal.fire({
+                title:'Error',
+                text: 'Debe ingresar un texto para agregar el comentario',
+                icon: 'error',
+                showConfirmButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar'
+            });
+            return;
+        }
         coment.id = generarIdRandom();
         coment.usrId = auth.uid;
         coment.usrNombre = auth.displayName;
         
         const nuevoComentario = [...comentarios, coment];
 
-        console.log(nuevoComentario);
-        
-        
         const docRef = doc(firebase.db, "productos", `${id}`);
  
         updateDoc(docRef, {
@@ -269,17 +279,18 @@ const Producto = () => {
             const img = ref(storage, URLImage);
 
             deleteObject(img).then(() =>{
-                Swal.fire({
-                    title: 'Exito',
-                    text: 'Producto eliminado correctamente',
-                    timer: 3000,
-                    icon: 'success'
-                });
+                
             }).catch((error) =>{
                 console.log(error);
             });
 
             router.push('/');
+            Swal.fire({
+                title: 'Exito',
+                text: 'Producto eliminado correctamente',
+                timer: 3000,
+                icon: 'success'
+            });
         } catch (error) {
             console.log(error);
         }
@@ -288,7 +299,7 @@ const Producto = () => {
         <Layout
             titulo={`Producto`}
         >
-            {cargando ? <p>Cargando ...</p> : (
+            {cargando ? <Loader/> : (
                 <>
                     {!error && (
                         <>
@@ -335,7 +346,18 @@ const Producto = () => {
                                                 background-image: url(${URLImage});
                                             `}
                                         ></ContImagen>
-                                        <p>{descripcion}</p>
+
+                                        <h2
+                                            css={css`
+                                                margin-top: 2rem;
+                                            `}
+                                        >Descripción</h2>
+                                        <p
+                                            css={css`
+                                                white-space: pre-wrap;
+                                                margin-top: 2rem;
+                                            `}
+                                        >{descripcion}</p>
                                         
                                         {auth && (
                                             <>

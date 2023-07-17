@@ -2,10 +2,13 @@ import Head from 'next/head';
 import React, { useContext } from 'react';
 import Header from './Header';
 import { FirebaseContext } from '../../firebase';
+import Loader from '../ui/Loader';
 
 const Layout = ({children, titulo}) => {
     const { auth,cargando } = useContext(FirebaseContext);
+
     return (
+        
         <>
             <Head>
                 {titulo === undefined ? (
@@ -13,10 +16,9 @@ const Layout = ({children, titulo}) => {
                 ) : (
                     <title>Product Hunt - {titulo}</title>
                 )}
-                
                 <meta name="description" content="Product Hunt, donde podrás publicar tus productos y recibir votos" />
             </Head>
-            {cargando ? <p>Cargando ...</p> : (
+            {cargando ? <Loader /> : (
                 <>
                     <Header />
                     <main>

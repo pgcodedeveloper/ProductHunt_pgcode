@@ -121,8 +121,6 @@ const DetallesProducto = ({producto}) => {
                 <div
                     css={css`
                         //flex: 3;
-                        
-
                         @media(max-width: 448px) {
                             display: flex;
                             align-items: center;
@@ -136,7 +134,7 @@ const DetallesProducto = ({producto}) => {
                     >
                         <Titulo>{nombre}</Titulo>
                     </Link>
-                    <TextoDescripcion>{descripcion}</TextoDescripcion>
+                    <TextoDescripcion>{descripcion.slice(0, 10)}...</TextoDescripcion>
 
                     <Comentarios>
                         <div>

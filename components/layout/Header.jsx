@@ -61,7 +61,7 @@ const Header = () => {
                         }
                     `}
                 >
-                    <Link href={'/'}>
+                    <Link href={'/'} legacyBehavior>
                         <Logo>P</Logo>
                     </Link>
                     
@@ -105,13 +105,13 @@ const Header = () => {
                         </>
                     ) : (
                         <>
-                            <Link href={'/login'}>
+                            <Link href={'/login'} legacyBehavior>
                                 <Boton
                                     bgColor="true"
                                     brRad='true'
                                 >Login</Boton>
                             </Link>
-                            <Link href={'/crear-cuenta'}>
+                            <Link href={'/crear-cuenta'} legacyBehavior>
                                 <Boton
                                     brRad='true'
                                 >Crear Cuenta</Boton>
